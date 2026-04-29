@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.hero h1 {
+  font-size: 2rem;
+}
+
+nav {
+  background: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav a {
+  color: #667eea;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  color: #667eea;
+  margin-bottom: 15px;
+  border-left: 4px solid #764ba2;
+  padding-left: 12px;
+}
+
+.stats {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.stat-item {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  min-width: 120px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.feature {
+  background: #f8f9ff;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.feature:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.feature-icon {
+  font-size: 2rem;
+}
+
+.news-item {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.news-title {
+  font-size: 1.1rem;
+  color: #667eea;
+  font-weight: bold;
+}
+
+.news-date {
+  color: #999;
+  font-size: 0.8rem;
+  margin: 8px 0;
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 3px 12px;
+  border-radius: 15px;
+}
+
+.timetable-table {
+  width: 100%;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.timetable-table th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.timetable-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.timetable-table tr:hover {
+  background: #f8f9ff;
+}
+
+.timetable-table ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+}
+
+.contact-icon {
+  font-size: 2rem;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+}
+
+.login-form, .admin-panel {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.news-item-admin {
+  background: #f8f9ff;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.news-item-admin button {
+  padding: 5px 15px;
+  margin-left: 8px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+footer {
+  background: #2d3748;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+@media (max-width: 700px) {
+  .stats { flex-direction: column; }
+  .news-item-admin { flex-direction: column; text-align: center; }
+  .news-item-admin button { margin-top: 8px; }
+}
