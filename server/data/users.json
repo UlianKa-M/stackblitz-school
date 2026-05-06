@@ -3,6 +3,14 @@
     "id": 1,
     "login": "teacher",
     "password": "12345",
-    "name": "Мария Ивановна"
+    "name": "Елена Павловна",
+    "role": "teacher"
+  },
+  {
+    "id": 2,
+    "login": "admin",
+    "password": "admin123",
+    "name": "Администратор",
+    "role": "admin"
   }
 ]
