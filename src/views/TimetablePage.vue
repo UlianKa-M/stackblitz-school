@@ -44,8 +44,18 @@
           </select>
         </div>
         
-        <div v-if="isAdmin" class="filter-group">
-          <label>Неделя:</label>
+        <div class="filter-group">
+          <label>Четность недели:</label>
+          <select v-model="filters.weekType">
+            <option value="">Все недели</option>
+            <option v-for="type in options.weekTypes" :key="type" :value="type">
+              {{ type === 'четная' ? 'Четная неделя' : 'Нечетная неделя' }}
+            </option>
+          </select>
+        </div>
+        
+        <div v-if="isAuth" class="filter-group">
+          <label>Неделя №:</label>
           <select v-model="filters.week">
             <option value="">Все недели</option>
             <option v-for="week in options.weeks" :key="week" :value="week">Неделя {{ week }}</option>
@@ -59,23 +69,25 @@
       <div v-else-if="filteredTimetable.length === 0" class="no-data">🔍 Нет данных по выбранным фильтрам</div>
       <div v-else class="timetable-results">
         <div class="timetable-header">
-          <div>Класс</div>
-          <div>Кабинет</div>
-          <div>Преподаватель</div>
-          <div>Предмет</div>
-          <div>День</div>
-          <div>Время</div>
-          <div v-if="isAdmin">Неделя</div>
-        </div>
-        <div v-for="item in filteredTimetable" :key="item.id" class="timetable-row">
-          <div><strong>{{ item.class }}</strong></div>
-          <div>🏢 {{ item.room }}</div>
-          <div>👨‍🏫 {{ item.teacher }}</div>
-          <div>📖 {{ item.subject }}</div>
-          <div>📅 {{ item.day }}</div>
-          <div>⏰ {{ item.time }}</div>
-          <div v-if="isAdmin">📍 Неделя {{ item.week }}</div>
-        </div>
+  <div>Класс</div>
+  <div>Кабинет</div>
+  <div>Преподаватель</div>
+  <div>Предмет</div>
+  <div>День</div>
+  <div>Время</div>
+  <div>Четность</div>
+  <div v-if="isAuth">Неделя №</div>
+</div>
+<div v-for="item in filteredTimetable" :key="item.id" class="timetable-row">
+  <div>🏫 {{ item.class }}</div>
+  <div>🔑 {{ item.room }}</div>
+  <div>👨‍🏫 {{ item.teacher }}</div>
+  <div>📚 {{ item.subject }}</div>
+  <div>📅 {{ item.day }}</div>
+  <div>⏰ {{ item.time }}</div>
+  <div>🔄 {{ item.weekType === 'четная' ? 'Четная' : 'Нечетная' }}</div>
+  <div v-if="isAuth">📌 {{ item.week }}</div>
+</div>
       </div>
     </div>
   </div>
@@ -85,19 +97,16 @@
 export default {
   data() {
     return {
-      isAdmin: false,
+      isAuth: false,
       loading: false,
       filteredTimetable: [],
-      options: { classes: [], rooms: [], teachers: [], subjects: [], days: [], weeks: [] },
-      filters: { class: '', room: '', teacher: '', subject: '', day: '', week: '' }
+      options: { classes: [], rooms: [], teachers: [], subjects: [], days: [], weeks: [], weekTypes: [] },
+      filters: { class: '', room: '', teacher: '', subject: '', day: '', week: '', weekType: '' }
     };
   },
   async mounted() {
     const user = localStorage.getItem('schoolUser');
-    if (user) {
-      const userData = JSON.parse(user);
-      this.isAdmin = userData.role === 'admin' || userData.role === 'teacher';
-    }
+    this.isAuth = !!user;
     await this.loadOptions();
     await this.loadTimetable();
   },
@@ -120,7 +129,8 @@ export default {
         if (this.filters.teacher) params.push(`teacher=${encodeURIComponent(this.filters.teacher)}`);
         if (this.filters.subject) params.push(`subject=${encodeURIComponent(this.filters.subject)}`);
         if (this.filters.day) params.push(`day=${encodeURIComponent(this.filters.day)}`);
-        if (this.isAdmin && this.filters.week) params.push(`week=${this.filters.week}`);
+        if (this.filters.weekType) params.push(`weekType=${encodeURIComponent(this.filters.weekType)}`);
+        if (this.isAuth && this.filters.week) params.push(`week=${this.filters.week}`);
         url += params.join('&');
         const res = await fetch(url);
         this.filteredTimetable = await res.json();
@@ -131,10 +141,11 @@ export default {
       }
     },
     resetFilters() {
-      this.filters = { class: '', room: '', teacher: '', subject: '', day: '', week: '' };
+      this.filters = { class: '', room: '', teacher: '', subject: '', day: '', week: '', weekType: '' };
       this.loadTimetable();
     }
   },
   watch: { filters: { deep: true, handler() { this.loadTimetable(); } } }
 };
 </script>
+

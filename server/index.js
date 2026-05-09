@@ -17,11 +17,25 @@ function writeJSON(file, data) {
   fs.writeFileSync(path.join(dataPath, file), JSON.stringify(data, null, 2));
 }
 
-//новости
+// ========== НОВОСТИ ==========
+
+// GET все новости
 app.get('/api/news', (req, res) => {
   res.json(readJSON('news.json'));
 });
 
+// GET одну новость по ID (ДОБАВИТЬ ЭТОТ БЛОК!)
+app.get('/api/news/:id', (req, res) => {
+  const news = readJSON('news.json');
+  const item = news.find(n => n.id == req.params.id);
+  if (item) {
+    res.json(item);
+  } else {
+    res.status(404).json({ error: 'Новость не найдена' });
+  }
+});
+
+// POST добавить новость
 app.post('/api/news', (req, res) => {
   const news = readJSON('news.json');
   const newNews = {
@@ -35,6 +49,7 @@ app.post('/api/news', (req, res) => {
   res.json(newNews);
 });
 
+// DELETE удалить новость
 app.delete('/api/news/:id', (req, res) => {
   let news = readJSON('news.json');
   news = news.filter(n => n.id != req.params.id);
@@ -42,6 +57,7 @@ app.delete('/api/news/:id', (req, res) => {
   res.json({ success: true });
 });
 
+// PUT обновить новость
 app.put('/api/news/:id', (req, res) => {
   let news = readJSON('news.json');
   const index = news.findIndex(n => n.id == req.params.id);
@@ -52,7 +68,8 @@ app.put('/api/news/:id', (req, res) => {
   res.json({ success: true });
 });
 
-//авторизация
+// ========== АВТОРИЗАЦИЯ ==========
+
 app.post('/api/login', (req, res) => {
   const users = readJSON('users.json');
   const user = users.find(u => u.login === req.body.login && u.password === req.body.password);
@@ -63,43 +80,62 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-//расписание
+// ========== РАСПИСАНИЕ ==========
+
 app.get('/api/timetable', (req, res) => {
   res.json(readJSON('timetable.json'));
 });
 
 app.get('/api/timetable/filter', (req, res) => {
   let timetable = readJSON('timetable.json');
-  const { week, class: className, room, teacher, subject, day } = req.query;
+  const { week, weekType, class: className, room, teacher, subject, day } = req.query;
   
-  if (week) timetable = timetable.filter(item => item.week == week);
-  if (className) timetable = timetable.filter(item => item.class === className);
-  if (room) timetable = timetable.filter(item => item.room === room);
-  if (teacher) timetable = timetable.filter(item => item.teacher === teacher);
-  if (subject) timetable = timetable.filter(item => item.subject === subject);
-  if (day) timetable = timetable.filter(item => item.day === day);
+  if (week) {
+    timetable = timetable.filter(item => item.week == week);
+  }
+  if (weekType) {
+    timetable = timetable.filter(item => item.weekType === weekType);
+  }
+  if (className) {
+    timetable = timetable.filter(item => item.class === className);
+  }
+  if (room) {
+    timetable = timetable.filter(item => item.room === room);
+  }
+  if (teacher) {
+    timetable = timetable.filter(item => item.teacher === teacher);
+  }
+  if (subject) {
+    timetable = timetable.filter(item => item.subject === subject);
+  }
+  if (day) {
+    timetable = timetable.filter(item => item.day === day);
+  }
   
   res.json(timetable);
 });
 
 app.get('/api/timetable/options', (req, res) => {
   const timetable = readJSON('timetable.json');
-  res.json({
-    classes: [...new Set(timetable.map(item => item.class))].sort(),
-    rooms: [...new Set(timetable.map(item => item.room))].sort(),
-    teachers: [...new Set(timetable.map(item => item.teacher))].sort(),
-    subjects: [...new Set(timetable.map(item => item.subject))].sort(),
-    days: [...new Set(timetable.map(item => item.day))].sort(),
-    weeks: [...new Set(timetable.map(item => item.week))].sort()
-  });
+  
+  const classes = [...new Set(timetable.map(item => item.class))].sort();
+  const rooms = [...new Set(timetable.map(item => item.room))].sort();
+  const teachers = [...new Set(timetable.map(item => item.teacher))].sort();
+  const subjects = [...new Set(timetable.map(item => item.subject))].sort();
+  const days = [...new Set(timetable.map(item => item.day))].sort();
+  const weeks = [...new Set(timetable.map(item => item.week))].sort();
+  const weekTypes = [...new Set(timetable.map(item => item.weekType))].sort();
+  
+  res.json({ classes, rooms, teachers, subjects, days, weeks, weekTypes });
 });
 
-//добавление нового урока
+// Добавление нового урока
 app.post('/api/timetable', (req, res) => {
   const timetable = readJSON('timetable.json');
   const newLesson = {
     id: Date.now(),
     week: parseInt(req.body.week) || 1,
+    weekType: req.body.weekType || 'нечетная',
     day: req.body.day,
     class: req.body.class,
     room: req.body.room,
@@ -112,7 +148,7 @@ app.post('/api/timetable', (req, res) => {
   res.json(newLesson);
 });
 
-//удаление урока
+// Удаление урока
 app.delete('/api/timetable/:id', (req, res) => {
   let timetable = readJSON('timetable.json');
   timetable = timetable.filter(item => item.id != req.params.id);

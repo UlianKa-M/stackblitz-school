@@ -77,6 +77,13 @@
       <input type="text" v-model="newLesson.subject" placeholder="Поне">
     </div>
     <div class="form-group">
+      <label>Четность недели</label>
+      <select v-model="newLesson.weekType">
+        <option value="нечетная">Нечетная неделя</option>
+        <option value="четная">Четная неделя</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label>Время</label>
       <input type="text" v-model="newLesson.time" placeholder="08:30-09:15">
     </div>
@@ -147,7 +154,7 @@ export default {
       editData: { id: null, title: '', content: '', date: '' },
       // Расписание (только для админа)
       allLessons: [],
-      newLesson: { class: '', room: '', teacher: '', subject: '', day: 'Понедельник', time: '', week: 1 },
+      newLesson: { class: '', room: '', teacher: '', subject: '', day: 'Понедельник', time: '', week: 1, weekType: 'нечетная' },
       timetableMsgText: '',
       timetableMsgType: ''
     };
