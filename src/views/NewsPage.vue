@@ -8,35 +8,28 @@
     </div>
     <p v-if="allNews.length === 0" style="text-align:center; color:white;">Новостей пока нет</p>
 
-    <!-- Модальное окно -->
     <div v-if="modalVisible" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content news-modal" @click.stop>
         <button class="modal-close" @click="closeModal">✕</button>
         
-        <!-- Изображение -->
         <div v-if="selectedNews.image" class="news-modal-image">
           <img :src="selectedNews.image" :alt="selectedNews.title">
         </div>
         
-        <!-- Категория -->
         <div class="news-modal-category">🏷️ {{ selectedNews.category || 'Новость' }}</div>
         
-        <!-- Заголовок -->
         <div class="news-modal-title">{{ selectedNews.title }}</div>
-        
-        <!-- Мета информация -->
+       
         <div class="news-modal-meta">
           <span class="news-modal-date">📅 {{ selectedNews.date }}</span>
           <span class="news-modal-author">✍️ {{ selectedNews.author || 'Пресс-служба' }}</span>
           <span class="news-modal-views">👁️ {{ selectedNews.views || 0 }} просмотров</span>
         </div>
         
-        <!-- Короткое описание -->
         <div v-if="selectedNews.shortContent" class="news-modal-short">
           📌 {{ selectedNews.shortContent }}
         </div>
         
-        <!-- Полный текст -->
         <div class="news-modal-content">{{ selectedNews.content }}</div>
       </div>
     </div>
