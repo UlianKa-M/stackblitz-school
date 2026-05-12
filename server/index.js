@@ -17,14 +17,12 @@ function writeJSON(file, data) {
   fs.writeFileSync(path.join(dataPath, file), JSON.stringify(data, null, 2));
 }
 
-// ========== НОВОСТИ ==========
-
-// GET все новости
+//get все новости
 app.get('/api/news', (req, res) => {
   res.json(readJSON('news.json'));
 });
 
-// GET одну новость по ID (ДОБАВИТЬ ЭТОТ БЛОК!)
+//get одну новость по ID 
 app.get('/api/news/:id', (req, res) => {
   const news = readJSON('news.json');
   const item = news.find(n => n.id == req.params.id);
@@ -35,7 +33,7 @@ app.get('/api/news/:id', (req, res) => {
   }
 });
 
-// POST добавить новость
+//post добавить новость
 app.post('/api/news', (req, res) => {
   const news = readJSON('news.json');
   const newNews = {
@@ -49,7 +47,7 @@ app.post('/api/news', (req, res) => {
   res.json(newNews);
 });
 
-// DELETE удалить новость
+//delete удалить новость
 app.delete('/api/news/:id', (req, res) => {
   let news = readJSON('news.json');
   news = news.filter(n => n.id != req.params.id);
@@ -57,7 +55,7 @@ app.delete('/api/news/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// PUT обновить новость
+//put обновить новость
 app.put('/api/news/:id', (req, res) => {
   let news = readJSON('news.json');
   const index = news.findIndex(n => n.id == req.params.id);
@@ -68,8 +66,6 @@ app.put('/api/news/:id', (req, res) => {
   res.json({ success: true });
 });
 
-// ========== АВТОРИЗАЦИЯ ==========
-
 app.post('/api/login', (req, res) => {
   const users = readJSON('users.json');
   const user = users.find(u => u.login === req.body.login && u.password === req.body.password);
@@ -79,8 +75,6 @@ app.post('/api/login', (req, res) => {
     res.status(401).json({ success: false, message: 'Неверный логин или пароль' });
   }
 });
-
-// ========== РАСПИСАНИЕ ==========
 
 app.get('/api/timetable', (req, res) => {
   res.json(readJSON('timetable.json'));
