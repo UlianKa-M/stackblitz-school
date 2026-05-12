@@ -70,7 +70,7 @@ app.post('/api/login', (req, res) => {
   const users = readJSON('users.json');
   const user = users.find(u => u.login === req.body.login && u.password === req.body.password);
   if (user) {
-    res.json({ success: true, name: user.name, role: user.role || 'teacher' });
+    res.json({ success: true, name: user.name, role: user.role });
   } else {
     res.status(401).json({ success: false, message: 'Неверный логин или пароль' });
   }
